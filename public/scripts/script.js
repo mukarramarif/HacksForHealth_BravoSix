@@ -1,19 +1,41 @@
-// Storing values
-localStorage.setItem('key', 'value');
+function init() {
+  $("#submit").click(() => {
+    var selectedTypes = []
+    $('input[name=ttype]:checked').each(function() {
+      selectedTypes.push($(this).val()); // Add each selected value to the array
+    });
 
-// Retrieving values
-const value = localStorage.getItem('key');
-console.log(value); // Output: value
+    $.ajax(
+      "/submit",
+      {
+        type: "GET",
+        url: "../results.html",
+        processData: true,
+        data: {
+          flu: $("#flu").val(),
+          diab: $("#diab").val(),
+          bp: $("#bp").val(),
+          skin: $("#skin").val(),
+          pros: $("#pros").val(),
+          den: $("den").val(),
+          vis: $("vis").val(),
+          check: $("check").val()
+        },
+        dataType: "json",
+        success: function (cards) {
+          console.log("Success")
+          // generateCards(cards)
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          alert("Error: " + jqXHR.responseText);
+          alert("Error: " + textStatus);
+          alert("Error: " + errorThrown);
+        }
+      }
+    );
+  });
+}
 
-class  Data {
-    constructor(flu,diab,colon,bp,skin,pros,den,vis){
-      this.flu = flu;
-      this.diab = diab;
-      this.colon = colon;
-      this.bp = bp;
-      this.skin = skin;
-      this.pros = pros;
-      this.den = den;
-      this.vis = vis;
-    }
-  }
+$( () => {
+  init();
+});

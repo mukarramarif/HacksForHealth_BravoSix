@@ -37,9 +37,8 @@ app.get("/submit", (req,res) =>{
 //   createCards(res);
 });
 
-
 class  Data {
-    constructor(flu,diab,colon,bp,skin,pros,den,vis){
+    constructor(flu,diab,colon,bp,skin,pros,den,vis,check){
         this.flu = flu;
         this.diab = diab;
         this.colon = colon;
@@ -48,6 +47,7 @@ class  Data {
         this.pros = pros;
         this.den = den;
         this.vis = vis;
+        this.check = check;
     }
 }
 app.listen(3000);
