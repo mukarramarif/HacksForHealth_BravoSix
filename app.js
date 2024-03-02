@@ -2,8 +2,6 @@ const express = require("express");
 const path = require("path");
 const app = express();
 
-console.log("Server Started");
-
 // Serve static files from the 'public' directory
 app.use(express.static(path.resolve(__dirname, "public")));
 
@@ -12,83 +10,81 @@ var data = null;
 
 function createCards(res){
     let cardList = [];
-
-    var curFlu = data.flu;
-    var curDiab = data.diab;
-    var curBP = data.bp;
-    var curSkin = data.skin;
-    var curPros = data.pros;
-    var nearestDate = new Date("9999-12");
+    let today = new Date();
+    let tdyYear = today.getFullYear();
+    let tdyMonth = today.getMonth()+1;
+    var curFlu = (data.flu == "") ? new Date(`${tdyYear}/${tdyMonth}`) : new Date(data.flu); 
+    var curDiab = (data.diab == "") ? new Date(`${tdyYear}/${tdyMonth}`) : new Date(data.diab); 
+    var curBP = (data.bp  == "") ? new Date(`${tdyYear}/${tdyMonth}`) : new Date(data.bp); 
+    var curSkin = (data.skin  == "") ? new Date(`${tdyYear}/${tdyMonth}`) : new Date(data.skin); 
+    var curPros = (data.pros  == "") ? new Date(`${tdyYear}/${tdyMonth}`) : new Date(data.pros); 
     
-    while(cardList.length < 10){
-        let card = new Card(nearestDate, "", false);
-        var newFlu = new Date();
-        if (curFlu != ""){
-            console.log("Here");
-            var newFlu = new Date(curFlu);
-            var newYear = newFlu.getFullYear();
-            newYear += 1;
-            var newMonth = newFlu.getMonth();
-            newFlu = new Date(`${newYear}/${newMonth}`);
+    while(cardList.length < 5){
+        let options = []
+        if (curFlu.getFullYear()+1 <= today.getFullYear){
+            options.push(new Card(today,"flu",true));
         }
-        curFlu = toString(newFlu.getFullYear()) + "-" + toString(newFlu.getMonth());
-        console.log(currFlu);
-        if(newFlu < card.date){
-            card = new Card(newFlu, "flu", false);
+        else{
+            options.push(new Card(curFlu,"flu",false));
+        }
+        if (curDiab.getFullYear()+3 <= today.getFullYear){
+            options.push(new Card(curDiab,"diab",true));
+        }
+        else{
+            options.push(new Card(curDiab,"diab",false));
+        }
+        if (curBP.getFullYear()+1 <= today.getFullYear){
+            options.push(new Card(curBP,"bp",true));
+        }
+        else{
+            options.push(new Card(curBP,"bp",false));
+        }
+        if (curSkin.getFullYear()+3<= today.getFullYear){
+            options.push(new Card(curSkin,"skin",true));
+        }
+        else{
+            options.push(new Card(curSkin,"skin",false));
+        }
+        if (curPros.getFullYear()+2 <= today.getFullYear){
+            options.push(new Card(curPros,"pros",true));
+        }
+        else{
+            options.push(new Card(curPros,"pros",false));
         }
 
-        var newDiab = new Date();
-        if (curDiab != ""){
-            var newDiab = new Date(curDiab);
-            var newYear = newDiab.getFullYear();
+        options.sort((a,b) => a.date - b.date);
+        cardList.push(options[0]);
+
+        switch (options[0].type){
+        case "flu":
+            curFlu = options[0].date;
+            curFlu.setFullYear(options[0].date.getFullYear()+1)
+            break;
+        case "diab":
+            var newYear = options[0].date.getFullYear();
+            var newMonth = options[0].date.getMonth()+1;
             newYear += 3;
-            var newMonth = newDiab.getMonth();
-            newDiab = new Date(`${newYear}/${newMonth}`);
-        }
-        curDiab = toString(newDiab.getFullYear()) + "-" + toString(newDiab.getMonth());
-        if(newDiab < card.date){
-            card = new Card(newDiab, "diab", false);
-        }
-
-        var newBP = new Date();
-        if (curBP != ""){
-            var newBP = new Date(curBP);
-            var newYear = newBP.getFullYear();
+            curDiab = new Date(`${newYear}/${newMonth}`)
+            break;
+        case "bp":
+            var newYear = options[0].date.getFullYear();
+            var newMonth = options[0].date.getMonth()+1;
             newYear += 1;
-            var newMonth = newBP.getMonth();
-            newBP = new Date(`${newYear}/${newMonth}`);
-        }
-        curBP = toString(newBP.getFullYear()) + "-" + toString(newBP.getMonth());
-        if(newBP < card.date){
-            card = new Card(newBP, "bp", false);
-        }
-
-        var newSkin = new Date();
-        if (curSkin != ""){
-            var newSkin = new Date(curSkin);
-            var newYear = newSkin.getFullYear();
+            curBP = new Date(`${newYear}/${newMonth}`)
+            break;
+        case "skin":
+            var newYear = options[0].date.getFullYear();
+            var newMonth = options[0].date.getMonth()+1;
             newYear += 3;
-            var newMonth = newSkin.getMonth();
-            newSkin = new Date(`${newYear}/${newMonth}`);
-        }
-        curSkin = toString(newSkin.getFullYear()) + "-" + toString(newSkin.getMonth());
-        if(newSkin < card.date){
-            card = new Card(newSkin, "skin", false);
-        }
-
-        var newPros = new Date();
-        if (curPros != ""){
-            var newPros = new Date(curFlu);
-            var newYear = newPros.getFullYear();
+            curSkin = new Date(`${newYear}/${newMonth}`)
+            break;
+        case "pros":
+            var newYear = options[0].date.getFullYear();
+            var newMonth = options[0].date.getMonth()+1;
             newYear += 2;
-            var newMonth = newPros.getMonth();
-            newPros = new Date(`${newYear}/${newMonth}`);
+            curPros = new Date(`${newYear}/${newMonth}`)
+            break;
         }
-        curPros = toString(newPros.getFullYear()) + "-" + toString(newPros.getMonth());
-        if(newPros < card.date){
-            card = new Card(newPros, "pros", false);
-        }
-        cardList.push(card);
     }
     console.log(cardList);
 }
@@ -114,17 +110,18 @@ class  Data {
     }
 }
 
-function createCards(res) {
-    let cardList = [];
-    // Logic to create cards based on 'data'
-    console.log("I made a list");
-    // Example: res.send(cardList); to send the list back to the client
+class Card {
+    constructor(date,type,danger){
+        this.date = date;
+        this.type = type;
+        this.danger = danger;
+    }
 }
 
 app.get("/submit", (req, res) => {
     console.log(req.query);
-    const { flu, diab, colon, bp, skin, pros, den, vis, check } = req.query;
-    data = new Data(flu, diab, colon, bp, skin, pros, den, vis, check);
+    const { flu, diab, bp, skin, pros} = req.query;
+    data = new Data(flu, diab, bp, skin, pros);
     createCards(res); // Assuming you want to create cards and respond within this function
     // For example, to send a simple response back:
     res.json({ message: "Data received and cards created" });
