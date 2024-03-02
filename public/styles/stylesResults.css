@@ -49,6 +49,14 @@ span::after {
   content: "+";
 }
 
+span.urgent::after {
+  float: right;
+  right: 10%;
+  top: 50%;
+  font-size: 25px;
+  content: "\26A0";
+}
+
 lh{
   font-size: large;
   text-align: left;
@@ -70,4 +78,4 @@ input {
   height: 0px;
 }    
 
-input:checked + .slide {height: 300px;} 
+input:checked + .slide {height: 330px} 
