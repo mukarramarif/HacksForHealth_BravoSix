@@ -25,6 +25,8 @@ function init() {
         success: function (cards) {
           console.log("Success")
           // generateCards(cards)
+          
+
         },
         error: function (jqXHR, textStatus, errorThrown) {
           alert("Error: " + jqXHR.responseText);
