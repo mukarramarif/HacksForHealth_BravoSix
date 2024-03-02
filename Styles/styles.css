@@ -2,8 +2,9 @@
     background-color: #f3f3f3;
 }
 body {
-    font-family: Arial, sans-serif;
-    
+    font-family: "Oxygen", sans-serif;
+    font-weight: 300;
+    font-style: normal;
     justify-content: center;
     align-items: center;
     min-height: 100vh;;
@@ -33,17 +34,15 @@ form {
     align-items: center;
     
 }
-input{
-    padding: 60px 75px;
-    
-    border-radius: 4px;
-    margin-bottom: 10px;
-    width:max-content;
-    
-    place-content: center;
-    
-};
 
+input{
+  background-color: #f3f3f3;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px;
+  font-size: 16px;
+  color: #333;
+}
 
 
 .button:hover {
