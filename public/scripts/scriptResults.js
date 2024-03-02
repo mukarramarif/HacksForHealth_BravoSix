@@ -1,11 +1,13 @@
 window.onload = makeCards;
 
-let json = '{"card":"flu", "date":"2000-01", "urgent": true}';
-let obj = JSON.parse(json)
+let json = ['{"card":"flu", "date":"2000-01", "urgent": true}', '{"card":"pros", "date":"2000-01", "urgent": false}'];
 
 function makeCards(){
     
     let cards = document.getElementById("cards");
+
+    for (let i = 0; i < json.length; i++){
+    let obj = JSON.parse(json[i]);
     let currCard = "<label for=\"" + obj.card + "\">";
 
     //urgent or not
@@ -54,7 +56,9 @@ function makeCards(){
 
     currCard += riskList;
 
-    cards.innerHTML = currCard;
+    cards.innerHTML += currCard;
+    }
+
 }
 
 let fluRisks = "<li>Fever</li><li>Aching Muscles</li><li>Chills and Sweats</li><li>Headache</li><li>Cough</li><li>Runny or Stuffy Nose</li><li>Sore Throat</li></ul>";
