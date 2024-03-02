@@ -35,12 +35,12 @@ form {
 }
 input{
     padding: 60px 75px;
-    
     border-radius: 4px;
     margin-bottom: 10px;
-    width:max-content;
-    
+    width:50%;
+    align-items: center;
     place-content: center;
+    color: crimson;
     
 };
 
