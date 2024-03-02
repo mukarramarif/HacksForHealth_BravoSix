@@ -106,6 +106,7 @@ class  Data {
         this.bp = bp;
         this.skin = skin;
         this.pros = pros;
+        
     }
 }
 
