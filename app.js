@@ -93,15 +93,15 @@ function createCards(res){
     console.log(cardList);
 }
 
-app.get("/submit", (req,res) =>{
-  const flu = req.query.flu;
-  const diab = req.query.diab;
-  const bp = req.query.bp;
-  const skin = req.query.skin;
-  const pros = req.query.pros;
-  data = new Data(flu,diab,bp,skin,pros);
-  createCards(res);
-});
+// app.get("/submit", (req,res) =>{
+//   const flu = req.query.flu;
+//   const diab = req.query.diab;
+//   const bp = req.query.bp;
+//   const skin = req.query.skin;
+//   const pros = req.query.pros;
+//   data = new Data(flu,diab,bp,skin,pros);
+//   createCards(res);
+// });
 
 class  Data {
     constructor(flu,diab,bp,skin,pros){
@@ -110,9 +110,7 @@ class  Data {
         this.bp = bp;
         this.skin = skin;
         this.pros = pros;
-        this.den = den;
-        this.vis = vis;
-        this.check = check;
+        
     }
 }
 
