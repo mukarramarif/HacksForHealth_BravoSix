@@ -1,44 +1,17 @@
-// Name: Selase Dzathor id: skd225
-
-console.log("Server Started: ")
-
 const express = require("express");
 const path = require("path");
-
 const app = express();
 
-app.use(express.static(
-  path.resolve(__dirname, "public")
-));
+console.log("Server Started");
 
+// Serve static files from the 'public' directory
+app.use(express.static(path.resolve(__dirname, "public")));
+
+// Data storage variable
 var data = null;
 
-function createCards(res){
-  let cardList = [];
-//   while(cardList.length < 10){
-    
-
-//   }
-//   const ret = JSON.stringify(bookList);
- console.log("I made a list");
-}
-
-app.get("/submit", (req,res) =>{
-  console.log(req.query);
-//   const flu = req.query.flu;
-//   const diab = req.query.diab;
-//   const colon = req.query.colon;
-//   const bp = req.query.bp;
-//   const skin = req.query.skin;
-//   const pros = req.query.pros;
-//   const den = req.query.pros;
-//   const vis = req.query.vis;
-//   data = new Data(flu,diab,colon,bp,skin,pros,den,vis);
-//   createCards(res);
-});
-
-class  Data {
-    constructor(flu,diab,colon,bp,skin,pros,den,vis,check){
+class Data {
+    constructor(flu, diab, colon, bp, skin, pros, den, vis, check) {
         this.flu = flu;
         this.diab = diab;
         this.colon = colon;
@@ -50,5 +23,25 @@ class  Data {
         this.check = check;
     }
 }
-app.listen(3000);
 
+function createCards(res) {
+    let cardList = [];
+    // Logic to create cards based on 'data'
+    console.log("I made a list");
+    // Example: res.send(cardList); to send the list back to the client
+}
+
+app.get("/submit", (req, res) => {
+    console.log(req.query);
+    const { flu, diab, colon, bp, skin, pros, den, vis, check } = req.query;
+    data = new Data(flu, diab, colon, bp, skin, pros, den, vis, check);
+    createCards(res); // Assuming you want to create cards and respond within this function
+    // For example, to send a simple response back:
+    res.json({ message: "Data received and cards created" });
+});
+
+app.get('/results.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'path/to/results.html'));
+});
+
+app.listen(3000, () => console.log("Server is running on http://localhost:3000"));
