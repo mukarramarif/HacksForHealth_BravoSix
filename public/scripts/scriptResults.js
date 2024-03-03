@@ -18,11 +18,12 @@ function makeCards(){
     }
     currCard += "<div>";
     
-    //date
-    let date = obj.date.split('-');
-    let year = parseInt(date[0]);
-    let month = parseInt(date[1]);
-    let monthList = ['', 'January ', 'February ', 'March ', 'April ', 'May ', 'June ', 'July ', 'August ', 'September ', 'October ', 'November ', 'December '];
+    //date    
+    let date = new Date(obj.date);
+    let year = date.getUTCFullYear();
+    let month = date.getUTCMonth();
+
+    let monthList = ['January ', 'February ', 'March ', 'April ', 'May ', 'June ', 'July ', 'August ', 'September ', 'October ', 'November ', 'December '];
     currCard += monthList[month] + year;
     
     currCard += "</div>"
