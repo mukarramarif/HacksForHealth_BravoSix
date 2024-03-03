@@ -1,7 +1,7 @@
 const express = require("express");
 const path = require("path");
 const app = express();
-
+const fs = require("fs");
 // Serve static files from the 'public' directory
 app.use(express.static(path.resolve(__dirname, "public")));
 
@@ -74,6 +74,17 @@ function createCards(res){
         }
     }
     const jsonString = JSON.stringify(cardList);
+    fs.writeFile("./public/scripts/data.json", jsonString, (error) => {
+        // throwing the error
+        // in case of a writing problem
+        if (error) {
+          // logging the error
+          console.error(error);
+      
+          throw error;
+        }
+    })
+    //console.log(jsonString);
     encodedData = encodeURIComponent(jsonString);
     console.log(encodedData);
 }
