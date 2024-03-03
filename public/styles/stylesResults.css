@@ -48,12 +48,7 @@ span {
   border-radius: 20px;
 }
 
-span::after {
-  float: right;
-  right: 10%;
-  top: 50%;
-  content: "+";
-}
+
 
 span.urgent::after {
   float: right;
