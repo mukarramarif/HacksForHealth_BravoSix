@@ -1,8 +1,17 @@
 window.onload = makeCards;
 
-let json = ['{"type":"flu", "date":"2024-05-05T00:00:00.000Z", "danger": true}', '{"type":"pros", "date":"2023-03-05T00:00:00.000Z", "danger": false}'];
+let json = ['{"type":"skin", "date":"2024-03-05T00:00:00.000Z", "danger": true}' ,'{"type":"flu", "date":"2024-11-05T00:00:00.000Z", "danger": false}', '{"type":"pros", "date":"2025-05-05T00:00:00.000Z", "danger": false}', '{"type":"diab", "date":"2026-01-05T00:00:00.000Z", "danger": false}', '{"type":"bp", "date":"2026-02-05T00:00:00.000Z", "danger": false}' ];
+
+async function getJsons(){
+    const response = await fetch("./data.json");
+    const jsons = await response.json();
+    console.log(jsons);
+    return jsons;
+}
 
 function makeCards(){
+    
+
     let cards = document.getElementById("cards");
 
     for (let i = 0; i < json.length; i++){
