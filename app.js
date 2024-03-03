@@ -75,7 +75,7 @@ function createCards(res){
     }
     const jsonString = JSON.stringify(cardList);
     encodedData = encodeURIComponent(jsonString);
-    //console.log(encodedData);
+    console.log(encodedData);
 }
 
 // app.get("/submit", (req,res) =>{
@@ -108,17 +108,16 @@ class Card {
 }
 
 app.get("/submit", (req, res) => {
-    //console.log(req.query);
     const { flu, diab, bp, skin, pros} = req.query;
     data = new Data(flu, diab, bp, skin, pros);
-    createCards(res); // Assuming you want to create cards and respond within this function
+    createCards(res);
     // For example, to send a simple response back:
-    console.log(cardList);
-    res.json({ message: "Data received and cards created", data: cardList});
+    // console.log(cardList);
+    console.log({message: "Data received and cards created", data: cardList});
+    res.send({message: "Data received and cards created", data: cardList});
 });
 
 app.get('/results.html', (req, res) => {
-    console.log("HELP");
     res.sendFile(path.join(__dirname, 'path/to/results.html'));
 });
 

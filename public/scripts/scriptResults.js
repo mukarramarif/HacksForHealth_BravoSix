@@ -3,7 +3,6 @@ window.onload = makeCards;
 let json = ['{"card":"flu", "date":"2000-01", "urgent": true}', '{"card":"pros", "date":"2000-01", "urgent": false}'];
 
 function makeCards(){
-    
     let cards = document.getElementById("cards");
 
     for (let i = 0; i < json.length; i++){
