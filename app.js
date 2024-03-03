@@ -7,86 +7,75 @@ app.use(express.static(path.resolve(__dirname, "public")));
 
 // Data storage variable
 var data = null;
+let cardList = [];
+var encodedData = null;
 
 function createCards(res){
-    let cardList = [];
     let today = new Date();
-    let tdyYear = today.getFullYear();
-    let tdyMonth = today.getMonth()+1;
-    var curFlu = (data.flu == "") ? new Date(`${tdyYear}/${tdyMonth}`) : new Date(data.flu); 
-    var curDiab = (data.diab == "") ? new Date(`${tdyYear}/${tdyMonth}`) : new Date(data.diab); 
-    var curBP = (data.bp  == "") ? new Date(`${tdyYear}/${tdyMonth}`) : new Date(data.bp); 
-    var curSkin = (data.skin  == "") ? new Date(`${tdyYear}/${tdyMonth}`) : new Date(data.skin); 
-    var curPros = (data.pros  == "") ? new Date(`${tdyYear}/${tdyMonth}`) : new Date(data.pros); 
+    var curFlu = (data.flu == "") ? new Date(`1000/1`) : new Date(data.flu); 
+    var curDiab = (data.diab == "") ? new Date(`1000/1`) : new Date(data.diab); 
+    var curBP = (data.bp  == "") ? new Date(`1000/1`) : new Date(data.bp); 
+    var curSkin = (data.skin  == "") ? new Date(`1000/1`) : new Date(data.skin); 
+    var curPros = (data.pros  == "") ? new Date(`1000/1`) : new Date(data.pros); 
     
     while(cardList.length < 5){
         let options = []
-        if (curFlu.getFullYear()+1 <= today.getFullYear){
-            options.push(new Card(today,"flu",true));
+        if (curFlu.getFullYear()+1 < today.getFullYear() || (curFlu.getFullYear()+1 == today.getFullYear && curFlu.getMonth() >= today.getMonth())){
+            options.push(new Card(new Date(today),"flu",true));
         }
         else{
-            options.push(new Card(curFlu,"flu",false));
+            options.push(new Card(new Date(curFlu),"flu",false));
         }
-        if (curDiab.getFullYear()+3 <= today.getFullYear){
-            options.push(new Card(curDiab,"diab",true));
-        }
-        else{
-            options.push(new Card(curDiab,"diab",false));
-        }
-        if (curBP.getFullYear()+1 <= today.getFullYear){
-            options.push(new Card(curBP,"bp",true));
+        if (curDiab.getFullYear()+3 < today.getFullYear() || (curDiab.getFullYear()+3 == today.getFullYear() && curDiab.getMonth() >= today.getMonth())){
+            options.push(new Card(new Date(today),"diab",true));
         }
         else{
-            options.push(new Card(curBP,"bp",false));
+            options.push(new Card(new Date(curDiab),"diab",false));
         }
-        if (curSkin.getFullYear()+3<= today.getFullYear){
-            options.push(new Card(curSkin,"skin",true));
-        }
-        else{
-            options.push(new Card(curSkin,"skin",false));
-        }
-        if (curPros.getFullYear()+2 <= today.getFullYear){
-            options.push(new Card(curPros,"pros",true));
+        if (curBP.getFullYear()+1 < today.getFullYear() || (curBP.getFullYear+1 == today.getFullYear() && curBP.getMonth() >= today.getMonth())){
+            options.push(new Card(new Date(today),"bp",true));
         }
         else{
-            options.push(new Card(curPros,"pros",false));
+            options.push(new Card(new Date(curBP),"bp",false));
+        }
+        if (curSkin.getFullYear()+3 < today.getFullYear() || (curSkin.getFullYear+3 == today.getFullYear() && curSkin.getMonth() >= today.getMonth())){
+            options.push(new Card(new Date(today),"skin",true));
+        }
+        else{
+            options.push(new Card(new Date(curSkin),"skin",false));
+        }
+        if (curPros.getFullYear()+2 < today.getFullYear() || (curPros.getFullYear+2 == today.getFullYear() && curPros.getMonth() >= today.getMonth())){
+            options.push(new Card(new Date(today),"pros",true));
+        }
+        else{
+            options.push(new Card(new Date(curPros),"pros",false));
         }
 
         options.sort((a,b) => a.date - b.date);
         cardList.push(options[0]);
 
+        let newYear = options[0].date.getFullYear();
         switch (options[0].type){
         case "flu":
-            curFlu = options[0].date;
-            curFlu.setFullYear(options[0].date.getFullYear()+1)
+            curFlu.setFullYear(newYear+1)
             break;
         case "diab":
-            var newYear = options[0].date.getFullYear();
-            var newMonth = options[0].date.getMonth()+1;
-            newYear += 3;
-            curDiab = new Date(`${newYear}/${newMonth}`)
+            curDiab.setFullYear(newYear+3)
             break;
         case "bp":
-            var newYear = options[0].date.getFullYear();
-            var newMonth = options[0].date.getMonth()+1;
-            newYear += 1;
-            curBP = new Date(`${newYear}/${newMonth}`)
+            curBP.setFullYear(newYear+1)
             break;
         case "skin":
-            var newYear = options[0].date.getFullYear();
-            var newMonth = options[0].date.getMonth()+1;
-            newYear += 3;
-            curSkin = new Date(`${newYear}/${newMonth}`)
+            curSkin.setFullYear(newYear+3)
             break;
         case "pros":
-            var newYear = options[0].date.getFullYear();
-            var newMonth = options[0].date.getMonth()+1;
-            newYear += 2;
-            curPros = new Date(`${newYear}/${newMonth}`)
+            curPros.setFullYear(newYear+2)
             break;
         }
     }
-    console.log(cardList);
+    const jsonString = JSON.stringify(cardList);
+    encodedData = encodeURIComponent(jsonString);
+    //console.log(encodedData);
 }
 
 // app.get("/submit", (req,res) =>{
@@ -119,15 +108,17 @@ class Card {
 }
 
 app.get("/submit", (req, res) => {
-    console.log(req.query);
+    //console.log(req.query);
     const { flu, diab, bp, skin, pros} = req.query;
     data = new Data(flu, diab, bp, skin, pros);
     createCards(res); // Assuming you want to create cards and respond within this function
     // For example, to send a simple response back:
-    res.json({ message: "Data received and cards created" });
+    console.log(cardList);
+    res.json({ message: "Data received and cards created", data: cardList});
 });
 
 app.get('/results.html', (req, res) => {
+    console.log("HELP");
     res.sendFile(path.join(__dirname, 'path/to/results.html'));
 });
 
