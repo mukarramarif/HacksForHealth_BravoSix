@@ -61,7 +61,7 @@ span::after {
   content: "+";
 }
 
-span.urgent::after {
+span.danger::after {
   float: right;
   right: 10%;
   top: 50%;
